@@ -17,7 +17,7 @@ function Form({ id, question, op1, op2, op3, op4,selectedOption,onOptionChange }
                     type="radio"
                     value={op1}
                     onChange={handleChange}
-                    name={`question-${id}`}
+                   // name={`question-${id}`}
                     id={`question-${id}-op1`}
                     checked={selectedOption === op1}
                 />

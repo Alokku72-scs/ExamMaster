@@ -66,8 +66,8 @@ function Contents({dataContainer}){
                 <button onClick={handlePrev} disabled={currIndex===0}>
                     Previous
                 </button>
-        <br/>
-        <br/>
+            <br/>
+            <br/>
                 <button onClick={handleNext} disabled={currIndex===dataContainer.length-1}>
                     Next
                 </button>
