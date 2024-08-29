@@ -29,7 +29,7 @@ const Template =({title,desc1,desc2,image,formType,setIsLoggedIn})=>{
                 <button className='w-full flex justify-center items-center rounded-[8px] font-medium text-richblack-100
                 border border-richblack-700 px-[12px] py-[12px] gap-x-2 mt-6'>
                     <FcGoogle/>
-                    <p className='text-white'>Sign Up With Google </p>
+                    <p className='text-green-800'>Sign Up With Google </p>
                 </button>
             </div>
 

@@ -1,6 +1,6 @@
 import React,{useState} from "react";
-import data from "./Data";
-import Contents from "./components/Contents";
+// import data from "./Data";
+// import Contents from "./components/Contents";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -16,7 +16,7 @@ const [isLoggedIn,setIsLoggedIn]=useState(false);
   return (
     <div >
 
-      <Navbar/>
+      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
 
       <Routes>
 
@@ -24,13 +24,11 @@ const [isLoggedIn,setIsLoggedIn]=useState(false);
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}/>} />
         <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn}/>}/>
         <Route path="/dashbord" element={
-          <PrivateRouter> 
+          <PrivateRouter isLoggedIn={isLoggedIn}> 
             <Dashboard/> 
           </PrivateRouter> }/>
 
       </Routes>
-
-      {/* <Contents dataContainer={data}/> */}
     </div>
   );
 }

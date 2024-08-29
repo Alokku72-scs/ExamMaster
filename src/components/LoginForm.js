@@ -10,7 +10,7 @@ const LoginForm =({setIsLoggedIn})=>{
     const [showPassword,setShowPassword] = useState(false);
     const navigate=useNavigate();
 
-    function changeHanler(event){
+    function changeHandler(event){
         setFormData((prevData)=>(
         {
             ...prevData,
@@ -23,6 +23,7 @@ const LoginForm =({setIsLoggedIn})=>{
         event.preventDefault();
         setIsLoggedIn(true);
         toast.success("Logged In");
+        console.log("Logged IN ");
         navigate("/dashbord");
     }
 
@@ -37,14 +38,14 @@ const LoginForm =({setIsLoggedIn})=>{
                 required
                 type="text"
                 value={formData.email}
-                onChange={changeHanler}
+                onChange={changeHandler}
                 placeholder='Enter email id'
                 name='email'
                 className='bg-richblack-800 rounded-[0.5rem] text-white w-full p-[12px]'
                 />
             </label>
 
-            <label>
+            <label className='relative'>
                 <p>
                     Password<sub className='text-pink-200'>*</sub>
                 </p>
@@ -53,7 +54,7 @@ const LoginForm =({setIsLoggedIn})=>{
                 required
                 type={showPassword ? ("text"):("password")}
                 value={formData.password}
-                onChange={changeHanler}
+                onChange={changeHandler}
                 placeholder='Enter Password'
                 name='password'
                 className='bg-richblack-800 rounded-[0.5rem] text-white w-full p-[12px]'
