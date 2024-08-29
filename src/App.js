@@ -8,6 +8,9 @@ import Dashboard from "./pages/Dashboard";
 import {Route,Routes} from 'react-router-dom';
 import PrivateRouter from './components/PrivateRouter';
 import Navbar from './components/Navbar';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import MockTest from "./pages/MockTest";
 
 function App() {
 
@@ -23,11 +26,13 @@ const [isLoggedIn,setIsLoggedIn]=useState(false);
         <Route path="/" element={<Home/>}/>
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}/>} />
         <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn}/>}/>
-        <Route path="/dashbord" element={
+        <Route path="/about" element={<About setIsLoggedIn={setIsLoggedIn}/>}/>
+        <Route path="/contact" element={<Contact setIsLoggedIn={setIsLoggedIn}/>}/>
+        <Route path="/dashboard" element={
           <PrivateRouter isLoggedIn={isLoggedIn}> 
             <Dashboard/> 
           </PrivateRouter> }/>
-
+          <Route path="/mock-test" element={<MockTest />} /> {/* Add this route for the mock test */}
       </Routes>
     </div>
   );
