@@ -3,10 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-const SignupForm = ({ setIsLoggedIn }) => {
-
-    const navigate = useNavigate();
-
+const SignupForm = ({ setUser }) => {
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -18,34 +15,25 @@ const SignupForm = ({ setIsLoggedIn }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword1, setShowPassword1] = useState(false);
 
+    const navigate = useNavigate();
 
     function changeHandler(event) {
-        const { name, value } = event.target
+        const { name, value } = event.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value
-        }))
+        }));
     }
-    console.log(formData);
 
     function submitHandler(event) {
         event.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            toast.error("Password don't match");
+            toast.error("Passwords don't match");
             return;
         }
-        setIsLoggedIn(true);
+        setUser({ loggedIn: true, role: 'user' }); // Assume 'user' role for signup
         toast.success("Account Created");
-        const accountData = { ...formData };
-
-        const finalData = {
-            ...accountData,
-            // accountType
-        }
-        console.log("Printing account data");
-        console.log(finalData);
-
-        navigate("/dashboard");
+        navigate("/login");
     }
 
     return (
@@ -66,7 +54,6 @@ const SignupForm = ({ setIsLoggedIn }) => {
                             className='bg-green-950 rounded-[0.5rem] text-white w-full p-[12px]'
                         />
                     </label>
-
                     <label>
                         <p className='text-[0.875rem] text-white mb-1 leading-[1.375rem]'>
                             Last Name<sup className='text-pink-200'>*</sup>
@@ -82,69 +69,60 @@ const SignupForm = ({ setIsLoggedIn }) => {
                         />
                     </label>
                 </div>
-
                 <label>
                     <p className='text-[0.875rem] text-white mb-1 leading-[1.375rem]'>
                         Email Address<sup className='text-pink-200'>*</sup>
                     </p>
                     <input
                         required
-                        type="email"
+                        type="text"
                         name="email"
                         onChange={changeHandler}
-                        placeholder='Enter Email Address'
+                        placeholder='Enter Email'
                         value={formData.email}
                         className='bg-green-950 rounded-[0.5rem] text-white w-full p-[12px]'
                     />
                 </label>
-
-                {/* createPassword and confirm password */}
-                <div className='flex justify-between'>
-                    <label className='relative'>
-                        <p className='text-[0.875rem] text-white mb-1 leading-[1.375rem]'>
-                            Create Password<sup className='text-pink-200'>*</sup>
-                        </p>
-                        <input
-                            required
-                            type={showPassword ? ("text") : ("password")}
-                            name="password"
-                            onChange={changeHandler}
-                            placeholder='Enter Password'
-                            value={formData.password}
-                            className='bg-green-950 rounded-[0.5rem] text-white w-full p-[12px]'
-                        />
-                        <span className='absolute right-3 top-[42px] cursor-pointer'
-                            onClick={() => setShowPassword((prev) => !prev)}>
-                            {showPassword ? (<AiOutlineEyeInvisible />) : (<AiOutlineEye />)}
-                        </span>
-                    </label>
-
-                    <label className='relative'>
-                        <p className='text-[0.875rem] text-white mb-1 leading-[1.375rem]'>
-                            Confirm Password<sup className='text-pink-200'>*</sup>
-                        </p>
-                        <input
-                            required
-                            type={showPassword1 ? ("text") : ("password")}
-                            name="confirmPassword"
-                            onChange={changeHandler}
-                            placeholder='Confirm Password'
-                            value={formData.confirmPassword}
-                            className='bg-green-950 rounded-[0.5rem] text-white w-full p-[12px]'
-                        />
-                        <span className='absolute right-3 top-[42px] cursor-pointer'
-                            onClick={() => setShowPassword1((prev) => !prev)}>
-                            {showPassword1 ? (<AiOutlineEyeInvisible />) : (<AiOutlineEye />)}
-                        </span>
-                    </label>
-                </div>
-
+                <label className='relative'>
+                    <p className='text-[0.875rem] text-white mb-1 leading-[1.375rem]'>
+                        Password<sub className='text-pink-200'>*</sub>
+                    </p>
+                    <input
+                        required
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        onChange={changeHandler}
+                        placeholder='Enter Password'
+                        value={formData.password}
+                        className='bg-green-950 rounded-[0.5rem] text-white w-full p-[12px]'
+                    />
+                    <span className='absolute right-3 top-[38px] cursor-pointer' onClick={() => setShowPassword(prev => !prev)}>
+                        {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                    </span>
+                </label>
+                <label className='relative'>
+                    <p className='text-[0.875rem] text-white mb-1 leading-[1.375rem]'>
+                        Confirm Password<sub className='text-pink-200'>*</sub>
+                    </p>
+                    <input
+                        required
+                        type={showPassword1 ? "text" : "password"}
+                        name="confirmPassword"
+                        onChange={changeHandler}
+                        placeholder='Confirm Password'
+                        value={formData.confirmPassword}
+                        className='bg-green-950 rounded-[0.5rem] text-white w-full p-[12px]'
+                    />
+                    <span className='absolute right-3 top-[38px] cursor-pointer' onClick={() => setShowPassword1(prev => !prev)}>
+                        {showPassword1 ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                    </span>
+                </label>
                 <button className='bg-yellow-500 rounded-[8px] font-medium text-richblack-900 px-[12px] py-[8px] mt-6'>
-                    Create Account
+                    Sign Up
                 </button>
             </form>
         </div>
-    )
+    );
 }
 
-export default SignupForm
+export default SignupForm;

@@ -1,10 +1,11 @@
 import React from 'react';
-const Dashboard =()=>{
+const AdminDashboard =()=>{
     return (
         <div className='flex items-center justify-center h-full text-3xl text-black'>
-            Dashboard Page
+            <h1>Welcome, Admin!</h1>
+            {/* Add admin-specific content here */}D
         </div>
     )
 }
 
-export default Dashboard;
+export default AdminDashboard;

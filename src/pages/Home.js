@@ -3,8 +3,16 @@ import React from "react";
 const  Home=()=>{
     return (
         <div className='flex items-center justify-center h-full text-3xl text-black'>
-            <h2>Home</h2>
+            <h2>Home
+                Pr Pratik Kaam Krega....
+            </h2>
+
+
+            <div>
+                {/* <img src="/jnulogo.jpg" alt="abc"/> */}
+            </div>
         </div>
+        
     )
 }
 
