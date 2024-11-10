@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 const SignupForm = ({ setUser }) => {
     const [formData, setFormData] = useState({
@@ -10,11 +11,11 @@ const SignupForm = ({ setUser }) => {
         email: "",
         password: "",
         confirmPassword: "",
+        role:"Admin",
     });
 
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword1, setShowPassword1] = useState(false);
-
     const navigate = useNavigate();
 
     function changeHandler(event) {
@@ -25,20 +26,26 @@ const SignupForm = ({ setUser }) => {
         }));
     }
 
-    function submitHandler(event) {
+    async function submitHandler(event) {
         event.preventDefault();
         if (formData.password !== formData.confirmPassword) {
             toast.error("Passwords don't match");
             return;
         }
-        setUser({ loggedIn: true, role: 'user' }); // Assume 'user' role for signup
-        toast.success("Account Created");
-        navigate("/login");
+
+        try {
+            const response = await axios.post('http://localhost:5000/api/v1/signup', formData);
+            setUser({ loggedIn: true, role: formData.role });
+            toast.success(response.data.message);
+            navigate("/login");
+        } catch (error) {
+            toast.error("Error creating account: " + error.response?.data?.message || "Please try again later");
+        }
     }
 
     return (
         <div>
-            <form onSubmit={submitHandler}>
+            <form onSubmit={submitHandler} className='flex flex-col w-full gap-y-2 mt-2'>
                 <div className='flex justify-between'>
                     <label>
                         <p className='text-[0.875rem] text-white mb-1 leading-[1.375rem]'>

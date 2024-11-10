@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 
+
 const LoginForm = ({ setUser }) => {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
@@ -15,20 +16,31 @@ const LoginForm = ({ setUser }) => {
         }));
     }
 
-    function submitHandler(event) {
+    async function submitHandler(event) {
         event.preventDefault();
 
-        // Dummy role for demonstration
-        const userRole = "admin";  // Replace this with the actual role from your backend
+        try {
+            const response = await fetch('http://localhost:5000/api/v1/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
 
-        setUser({ loggedIn: true, role: userRole });
-        toast.success("Logged In");
-        if (userRole === "admin") {
-            navigate("/admin-dashboard");
-            console.log("this is admin section");
-        } else {
-            navigate("/student-dashboard");
-            console.log("this is student section");
+            const data = await response.json();
+
+            if (response.ok) {
+                setUser({ loggedIn: true, role: data.role }); // Set user state
+                toast.success("Logged In");
+                navigate(data.role === "Admin" ? "/admin-dashboard" : "/student-dashboard");
+                //navigate('/instruction');
+            } else {
+                toast.error(data.message || "Login failed");
+            }
+        } catch (error) {
+            toast.error("An error occurred. Please try again.");
+            console.error(error);
         }
     }
 
@@ -37,7 +49,6 @@ const LoginForm = ({ setUser }) => {
             <label>
                 <p>Email Address<sup className='text-pink-200'> *</sup></p>
                 <input
-                    required
                     type="text"
                     value={formData.email}
                     onChange={changeHandler}
@@ -50,7 +61,6 @@ const LoginForm = ({ setUser }) => {
             <label className='relative'>
                 <p>Password<sub className='text-pink-200'>*</sub></p>
                 <input
-                    required
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={changeHandler}
@@ -66,7 +76,7 @@ const LoginForm = ({ setUser }) => {
                 </Link>
             </label>
             <button className='bg-yellow-500 rounded-[8px] font-medium text-richblack-900 px-[12px] py-[8px] mt-6'>
-                Sign in
+                Login
             </button>
         </form>
     );

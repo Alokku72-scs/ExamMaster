@@ -1,8 +1,12 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-const PrivateRouter = ({ user, allowedRoles, children }) => {
-  if (!user || !allowedRoles.includes(user.role)) {
+const PrivateRouter = ({ isLoggedIn, userRole, allowedRoles, children }) => {
+  console.log("isLoggedIn:", isLoggedIn);
+  console.log("userRole:", userRole);
+  console.log("allowedRoles:", allowedRoles);
+
+  if (!isLoggedIn || !allowedRoles.includes(userRole)) {
     return <Navigate to="/login" />;
   }
 
@@ -10,3 +14,4 @@ const PrivateRouter = ({ user, allowedRoles, children }) => {
 };
 
 export default PrivateRouter;
+

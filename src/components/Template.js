@@ -6,9 +6,9 @@ import { FcGoogle } from 'react-icons/fc';
 
 const Template = ({ title, desc1, desc2, image, formType, setUser }) => {
     return (
-        <div className='flex justify-between w-11/12 max-w-[1160px] py-12 mx-auto gap-x-20 gap-y-8'>
+        <div className='flex justify-center w-11/12 max-w-[1160px] py-12 mx-auto gap-x-20 gap-y-8'>
             <div className='w-11/12 max-w-[450px]'>
-                <h1 className='text-white font-semibold text'>{title}</h1>
+                <h1 className='text-green-700 font-bold text-[2.6rem]'>{title}</h1>
                 <p className='text-[1.125rem] leading-[1.635rem] mt-4'>
                     <span className='text-blue-200'>{desc1}</span> <br />
                     <span className='text-blue-600 italic'>{desc2}</span>
@@ -31,7 +31,7 @@ const Template = ({ title, desc1, desc2, image, formType, setUser }) => {
                 </button>
             </div>
 
-            <div className='relative w-11/12 max-w-[450px]'>
+            {/* <div className='relative w-11/12 max-w-[450px]'>
                 <img src={frameImage}
                     alt="Pattern" width={300}
                     height={200} loading="lazy" />
@@ -41,7 +41,7 @@ const Template = ({ title, desc1, desc2, image, formType, setUser }) => {
                     height={270} loading="lazy"
                     className='absolute -top-4 right-40'
                 />
-            </div>
+            </div> */}
         </div>
     );
 }

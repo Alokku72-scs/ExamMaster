@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-hot-toast';
-import './Navbar.css';
-import jnuLogo from '../assets/jnulogo.jpg';
+//import './Navbar.css';
 
-const Navbar = ({ user, setUser }) => {
+const Navbar = ({ isLoggedIn, userRole, onLogout }) => {
     const [currentTime, setCurrentTime] = useState('');
     const [currentDate, setCurrentDate] = useState('');
     const [currentDay, setCurrentDay] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const updateTimeAndDate = () => {
@@ -19,13 +19,11 @@ const Navbar = ({ user, setUser }) => {
         };
         updateTimeAndDate();
 
-        // Update the time every second
         const intervalId = setInterval(updateTimeAndDate, 1000);
-
-        // Clean up the interval on component unmount
         return () => clearInterval(intervalId);
     }, []);
 
+    
     return (
         <div className='flex flex-col w-screen'>
             <div className='bg-gray-900 w-full h-auto pt-0 pb-0 px-4 mb-0.1'>
@@ -44,7 +42,7 @@ const Navbar = ({ user, setUser }) => {
                             <div className='absolute bottom-0 w-full h-0.5 bg-[#17a2b8] hidden group-hover:block transition-all duration-200'></div>
                         </li>
                         <li className="text-white font-medium hover:text-[#17a2b8] cursor-pointer transition-all duration-200 relative group">
-                            <Link to="/about">About</Link>
+                            <Link to="/public/about">About</Link>
                             <div className='absolute bottom-0 w-full h-0.5 bg-[#17a2b8] hidden group-hover:block transition-all duration-200'></div>
                         </li>
                         <li className="text-white font-medium hover:text-[#17a2b8] cursor-pointer transition-all duration-200 relative group">
@@ -52,46 +50,50 @@ const Navbar = ({ user, setUser }) => {
                             <div className='absolute bottom-0 w-full h-0.5 bg-[#17a2b8] hidden group-hover:block transition-all duration-200'></div>
                         </li>
                         <li className="text-white font-medium hover:text-[#17a2b8] cursor-pointer transition-all duration-200 relative group">
-                            <Link to="/mock-test">Mock Test</Link>
+                            <Link to="/quiz">Mock Test</Link>
                             <div className='absolute bottom-0 w-full h-0.5 bg-[#17a2b8] hidden group-hover:block transition-all duration-200'></div>
                         </li>
                     </ul>
                 </nav>
 
-                <div className='flex items-center gap-x-4 w-full'>
-                    {!user ?
+                <div className='flex ml-auto items-center gap-x-6'>
+                    {!isLoggedIn ? (
                         <>
-                            <Link to="/login">
-                                <button className='bg-richblack-800 text-white py-[8px] px-[12px] rounded-[8px] border border-richblack-700'>Log In</button>
+                            <Link to="/auth/login">
+                                <button className='bg-richblack-800 text-white py-[8px] px-[12px]  rounded-[8px] border border-richblack-700 '>LogIn</button>
                             </Link>
                             <Link to="/signup">
-                                <button className='bg-richblack-800 text-white py-[8px] px-[12px] rounded-[8px] border border-richblack-50'>Signup</button>
+                                <button className='bg-richblack-800 text-white py-[8px] px-[12px] rounded-[8px] border border-richblack-50 mr-3'>Signup</button>
                             </Link>
                         </>
-                        :
+                    ) : (
                         <>
-                            <Link to="/">
-                                <button className='bg-richblack-800 text-white py-[8px] px-[12px] rounded-[8px] border border-richblack-50' onClick={() => {
-                                    setUser(null); // Clear user state to log out
+                            <button
+                                className='bg-richblack-800 text-white py-[8px] px-[12px] rounded-[8px] border border-richblack-50'
+                                onClick={() => {
+                                    onLogout(); // Call the onLogout prop to handle logout
                                     toast.success("Logged Out");
-                                }}>Log Out</button>
-                            </Link>
-                            {user.role === 'admin' &&
+                                    navigate('/'); // Redirect to home page after logging out
+                                }}
+                            >
+                                Logout
+                            </button>
+                            {userRole === 'Admin' && (
                                 <Link to="/admin-dashboard">
-                                    <button className='bg-richblack-800 text-white py-[8px] px-[12px] rounded-[8px] border border-richblack-50'>Admin Dashboard</button>
+                                    <button className='bg-richblack-800 text-white py-[8px] px-[12px] rounded-[8px] border border-richblack-50 mr-3'>AdminDashboard</button>
                                 </Link>
-                            }
-                            {user.role === 'student' &&
+                            )}
+                            {userRole === 'Student' && (
                                 <Link to="/student-dashboard">
-                                    <button className='bg-richblack-800 text-white py-[8px] px-[12px] rounded-[8px] border border-richblack-50'>Student Dashboard</button>
+                                    <button className='bg-richblack-800 text-white py-[8px] px-[12px] rounded-[8px] border border-richblack-50 mr-3'>StudentDashboard</button>
                                 </Link>
-                            }
+                            )}
                         </>
-                    }
+                    )}
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default Navbar;
