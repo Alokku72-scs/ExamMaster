@@ -29,7 +29,7 @@ const LoginFormDemo = () => {
     const submitHandler = (event) => {
         event.preventDefault();
         if (isVisited) {
-            navigate('/paper', { state: { questions: questions } }); // Pass questions properly
+            navigate('/instruction', { state: { questions: questions } }); // Pass questions properly
         } else {
             navigate('/demologin')
         }
@@ -70,6 +70,9 @@ const LoginFormDemo = () => {
                     Login
                 </button>
             </form>
+            <div>
+                <img/>
+            </div>
         </div>
     );
 }

@@ -11,7 +11,7 @@ function App() {
   const [userRole, setUserRole] = useState(null);
   const location = useLocation();
 
-  const noNavbarRoutes = ['/paper', '/result-page'];
+  const noNavbarRoutes = ['/paper', '/result-page','/final-page'];
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -24,8 +24,8 @@ function App() {
   };
 
   return (
-    <div>
-        {!noNavbarRoutes.includes(location.pathname) && (
+    <>
+      {!noNavbarRoutes.includes(location.pathname) && (
         <Navbar
           isLoggedIn={isLoggedIn}
           userRole={userRole}
@@ -34,13 +34,12 @@ function App() {
       )}
 
       <Routes>
-        <Route path="/*" element={<PublicRoutes />} />
-        <Route path="/login/*" element={<AuthRoutes setUser={setUser} />} />
-        <Route path="/signup/*" element={<AuthRoutes setUser={setUser} />} />
-        <Route path="/admin-dashboard/*" element={<AdminRoutes isLoggedIn={isLoggedIn} userRole={userRole} />} />
-        <Route path="/student-dashboard/*" element={<StudentRoutes isLoggedIn={isLoggedIn} userRole={userRole} />} />
+        <Route path="/auth/*" element={<AuthRoutes isLoggedIn={isLoggedIn} setUser={setUser} />} />
+        <Route path="/admin/*" element={<AdminRoutes isLoggedIn={isLoggedIn} userRole={userRole} />} />
+        <Route path="/student/*" element={<StudentRoutes  isLoggedIn={isLoggedIn} userRole={userRole}/>} />
+        <Route path="/*" element={<PublicRoutes setUser={setUser} />} /> 
       </Routes>
-    </div>
+    </>
   );
 }
 

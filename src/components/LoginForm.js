@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useCallback } from 'react';
+import img from '../assets/abc.jpg';
 
 
 const LoginForm = ({ setUser }) => {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
+    const [userData, setUserData] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     function changeHandler(event) {
@@ -15,6 +20,21 @@ const LoginForm = ({ setUser }) => {
             [event.target.name]: event.target.value
         }));
     }
+
+
+    const fetchStudentDetails = useCallback(async () => {
+        try {
+            console.log("Fetching details for", formData.email);
+            const response = await axios.get(`http://localhost:5000/api/v1/users/${formData.email}`);
+            const userDat = response.data;
+            console.log("Fetched user data", userDat);
+            return userDat;  // Return the user data
+        } catch (err) {
+            console.error('Error fetching student details:', err.response?.data || err.message);
+            setError('Failed to load exams. Please try again later.');
+            return null;
+        }
+    }, [formData.email]); // Dependency on formData.email
 
     async function submitHandler(event) {
         event.preventDefault();
@@ -27,14 +47,19 @@ const LoginForm = ({ setUser }) => {
                 },
                 body: JSON.stringify(formData),
             });
-
             const data = await response.json();
 
             if (response.ok) {
                 setUser({ loggedIn: true, role: data.role }); // Set user state
                 toast.success("Logged In");
-                navigate(data.role === "Admin" ? "/admin-dashboard" : "/student-dashboard");
-                //navigate('/instruction');
+
+                // Fetch student details after successful login
+                const fetchedUserData = await fetchStudentDetails(); // Wait for the fetch to complete
+                if (fetchedUserData) {
+                    console.log("User data after fetch", fetchedUserData);
+                    // Navigate to the appropriate dashboard with the fetched userData
+                    navigate(data.role === "Admin" ? "/admin/admin-dashboard" : "/student/student-dashboard", { state: { userData: fetchedUserData } });
+                }
             } else {
                 toast.error(data.message || "Login failed");
             }
@@ -45,30 +70,33 @@ const LoginForm = ({ setUser }) => {
     }
 
     return (
-        <form onSubmit={submitHandler} className='flex flex-col w-full gap-y-4 mt-6'>
+
+
+        <form className='flex flex-col margin:auto'
+            onSubmit={submitHandler} >
             <label>
-                <p>Email Address<sup className='text-pink-200'> *</sup></p>
+                <p className='font-medium'>Email Address<sup className='text-pink-500 font-extrabold'> *</sup></p>
                 <input
                     type="text"
                     value={formData.email}
                     onChange={changeHandler}
                     placeholder='Enter email id'
                     name='email'
-                    className='bg-richblack-800 rounded-[0.5rem] text-white w-full p-[12px]'
+                    className='bg-white border-2 rounded-[0.5rem] text-black w-full p-[12px] mb-2 mt-2 font-serif'
                 />
             </label>
 
-            <label className='relative'>
-                <p>Password<sub className='text-pink-200'>*</sub></p>
+            <label className='relative mt-2'>
+                <p className='font-medium'>Password<sup className='text-pink-400 font-extrabold'>*</sup></p>
                 <input
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={changeHandler}
                     placeholder='Enter Password'
                     name='password'
-                    className='bg-richblack-800 rounded-[0.5rem] text-white w-full p-[12px]'
+                    className='bg-white border-2 rounded-[0.5rem] text-black w-full p-[12px] mt-2 font-serif'
                 />
-                <span className='absolute right-3 top-[38px] cursor-pointer' onClick={() => setShowPassword(prev => !prev)}>
+                <span className='absolute right-3 top-[50px] cursor-pointer' onClick={() => setShowPassword(prev => !prev)}>
                     {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                 </span>
                 <Link to='#'>
@@ -79,6 +107,7 @@ const LoginForm = ({ setUser }) => {
                 Login
             </button>
         </form>
+
     );
 }
 

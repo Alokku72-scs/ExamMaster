@@ -1,9 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
-const {login, signup} = require("../controllers/Auth");
+// Import the controller functions
+const { login, signup, getAllStudents, getUserDetails } = require("../controllers/Auth");
 
-router.post("/login",login);
-router.post("/signup",signup);
+// Define the routes
+router.post("/login", login);
+router.post("/signup", signup);
+router.get("/students", getAllStudents);
+router.get('/users/:email', getUserDetails);
 
-module.exports=router;
+// Export the router
+module.exports = router;

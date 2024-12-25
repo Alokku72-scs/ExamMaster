@@ -1,15 +1,14 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import LoginForm from '../components/LoginForm';
-import Signup from '../pages/Signup';
+import Login from '../pages/Login';
 import LoginFormDemo from '../components/LoginFormDemo';
+import Signup from '../pages/Signup';
 
 const AuthRoutes = ({ setUser }) => {
   return (
     <Routes>
-      <Route path="/auth/login" element={<LoginForm setUser={setUser} />} />
+      <Route path="/login" element={<Login setUser={setUser} />}/>
       <Route path="/signup" element={<Signup setUser={setUser} />} />
-      <Route path="/demologin" element={<LoginFormDemo />} />
     </Routes>
   );
 };

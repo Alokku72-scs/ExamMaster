@@ -1,4 +1,5 @@
 import React,{useRef} from "react";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Logo1 from "../assets/Logo1.png";
 import Logo2 from "../assets/Logo2.png";
@@ -9,12 +10,14 @@ import Logo5 from "../assets/Logo5.png";
 function Instruction() {
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const questions = location.state?.questions || [];
     const checkboxRef = useRef(null);
 
     const submitHandler = (event) => {
         event.preventDefault();
         if (checkboxRef.current && checkboxRef.current.checked) {
-            navigate('/paper');
+            navigate('/paper' ,{ state: { questions: questions } });
         } else {
             alert("Please agree to the instructions before proceeding.");
         }
@@ -45,7 +48,7 @@ function Instruction() {
                     <h3 className="font-semibold text-xl "><u>General instructions:</u></h3>
                     <div className="ml-7 mt-3">
                         <ol className="list-decimal font-serif">
-                            <li>Total duration of JEE-Main - PAPER 1 EHG 11th Jan SHIFT 2 is 180 min.</li>
+                            <li>Total duration of PAPER  {questions.size} min.</li>
                             <li>The clock will be set at the server. The countdown timer in the top right corner of screen will display the remaining time available for you to complete the examination.
                                 When the timer reaches zero, the examination will end by itself. You will not be required to end or submit your examination.</li>
                             <li>The Questions Palette displayed on the right side of screen will show the status of each question using one of the following symbols:</li>
